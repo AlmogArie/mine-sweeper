@@ -53,7 +53,7 @@ function showNeighbors(cellI, cellJ, board) {
             posOfNegs.push({ posI: i, posJ: j });
 
             if (board[i][j].isMine) {
-                value = MINE_IMG;
+                value = MINE;
             } else if (!board[i][j].isShown) {
                 value = board[i][j].minesAroundCount;
             } else if (board[i][j].isShown) continue;
@@ -89,22 +89,20 @@ function openNegs(cellI, cellJ, board) {
             if (j < 0 || j >= board[i].length) continue;
 
             if (board[i][j].isMine) {
-                return;
+                continue;
             } else if (!board[i][j].isShown) {
-                if (board[cellI][cellJ].minesAroundCount === 0) {
-                    if (board[i][j].minesAroundCount === 0) {
-                        value = '';
-                    } else value = board[i][j].minesAroundCount;
-
+                if (board[i][j].minesAroundCount !== 0) {
+                    value = board[i][j].minesAroundCount;
                 }
-                gGame.shownCount++
             }
-            board[i][j].isShown = true;
+            gGame.shownCount++
 
             var elCell = document.querySelector(`#cell-${i}-${j}`);
             elCell.style.backgroundColor = 'gray';
 
             renderCell({ i: i, j: j }, value);
+            console.log('need to add to count');
+            
         }
     }
 }

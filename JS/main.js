@@ -1,6 +1,5 @@
-// bug list on the bottom...
-
 // CONST 
+const MINE = 'BOMB';
 const EMPTY = '';
 
 const MINE_IMG = '<img src="IMG/bomb.svg" />'
@@ -21,11 +20,9 @@ var gGame = {
     isHint: false,
     hints: 3,
 }
-
 var gElButton = document.querySelector('.restart');
 var gElDiv = document.querySelector('.popup');
 var gElHint = document.querySelector('.hint');
-var gInterval;
 
 var gCounterCell = 0;
 
@@ -39,9 +36,6 @@ function init() {
 
 // CLICKING A CELL
 function cellClicked(elCell, i, j) {
-    if (gGame.isOn === false) return;
-    //start timer
-    timerBtMillisec();
 
     // show restart button on first click and puting mines and negs on board
     if (gCounterCell === 0) {
@@ -50,28 +44,30 @@ function cellClicked(elCell, i, j) {
         gCounterCell++;
         findAllNegs(gBoard);
     }
+    //show negs when click empty spot
+    if (gBoard[i][j].isMine === false && gBoard[i][j].minesAroundCount === 0) {
+        openNegs(i, j, gBoard);
+    }
+
 
     // changing the color of a cell when pressed
     elCell.style.backgroundColor = 'gray';
+
 
     // when pressing the hint button
     if (gGame.isHint) {
         showNeighbors(i, j, gBoard);
         return;
     }
-    gGame.shownCount++
 
-    //show negs when click empty spot
-    if (gBoard[i][j].isMine === false && gBoard[i][j].minesAroundCount === 0) {
-        openNegs(i, j, gBoard);
-        return;
-    }
+    if (gGame.isOn === false) return;
 
     var cell = gBoard[i][j];
 
     if (cell.isShown) return;
 
-    checkGameOver(cell);
+    gGame.shownCount++
+    checkGameOver(cell)
 
     //Rendering the board
     if (cell.minesAroundCount > 0) {
@@ -82,7 +78,11 @@ function cellClicked(elCell, i, j) {
     } else value = '';
     cell.isShown = true;
     renderCell({ i: i, j: j }, value)
+    console.log(gGame.cellMarked);
+    console.log(gGame.shownCount);
+
 }
+
 
 // GAME OVER POP UP DIV
 function checkGameOver(cell) {
@@ -93,7 +93,6 @@ function checkGameOver(cell) {
         gElDiv.style.display = 'block';
         gElButton.innerText = '😔';
         gGame.isOn = false;
-        clearInterval(gInterval);
         return;
     }
     //Check if win
@@ -102,8 +101,6 @@ function checkGameOver(cell) {
         gElDiv.style.display = 'block';
         gElButton.innerText = '😎';
         gGame.isOn = false;
-        clearInterval(gInterval);
-        return;
     }
 }
 
@@ -135,9 +132,7 @@ function restart() {
     gGame.shownCount = 0;
     gGame.markedCount = 0;
     gGame.secsPassed = 0;
-    gGame.secsPassed = 0,
-        gGame.hints = 3,
-
+    gGame.hints = 3,
         gElButton.innerText = '😊';
     gElHint.innerText = `${gGame.hints} hints left`;
     init()
@@ -159,15 +154,6 @@ function hint() {
     gElHint.innerText = `${gGame.hints} hints left`;
 
 }
-
-
-/*
-BUG LIST:
-1.) Timer don't stop when game is over.
-2.) sometime when the game is over and all the cells are open and marked the winner or loser popup dive not showing.
-3.)sometimes the negscount is updating and the rendering is a false picture of the BOMB location.
-*/
-
 
 
 

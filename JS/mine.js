@@ -5,11 +5,13 @@ function putRandomMine(num, i, j) {
     while (count < num) {
         var posI = getRandomIntInclusive(0, gLevel.size-1);
         var posJ = getRandomIntInclusive(0, gLevel.size-1);
+        
 
         if (posI === i && posJ === j) continue;
         if (gBoard[posI][posJ].isMine === false) {
             gBoard[posI][posJ].isMine = true;
             count++;
+            renderCell({ i: posI, j: posJ }, MINE);
         }
     }
 }
