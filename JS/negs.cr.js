@@ -18,10 +18,8 @@ function setMinesNegsCount(cellI, cellJ, board) {
             if (board[i][j].isMine === true) {
                 board[cellI][cellJ].minesAroundCount++;
             }
-            var location = {
-                i: cellI,
-                j: cellJ,
-            }
+            // CR: no use of location variable
+           
             var cell = board[cellI][cellJ];
             if (cell.isShown === false) {
                 var value = '';

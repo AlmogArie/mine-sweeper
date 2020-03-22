@@ -27,7 +27,7 @@ function renderBoard(board) {
         strHtml += '<tr>';
         for (var j = 0; j < row.length; j++) {
             // var cell = row[j];
-            var cell = board[i][j].isShown ? board[i][j].min: ''
+            var cell = board[i][j].isShown ? board[i][j].min : ''
             // TODO: figure class name
             var className = 'cell';
             var tdId = `cell-${i}-${j}`;
@@ -59,6 +59,17 @@ function renderCell(location, value) {
     var elCell = document.querySelector(`#cell-${location.i}-${location.j}`);
     elCell.innerHTML = value;
 
+}
+
+
+//TIMER 
+function timerBtMillisec() {
+    gStartTime = Date.now();
+    gInterval = setInterval(() => {
+        var dif = Date.now() - gStartTime;
+        var elMlSeconds = document.querySelector('.mil-seconds');
+        elMlSeconds.innerText = dif / 1000;
+    }, 10);
 }
 
 

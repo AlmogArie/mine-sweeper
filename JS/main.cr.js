@@ -42,6 +42,7 @@ function init() {
 function cellClicked(elCell, i, j) {
     if (gGame.isOn === false) return;
     //start timer
+    // CR: you start your timer every click, you should start the timer only on first click and then use interval
     timerBtMillisec();
 
     // show restart button on first click and puting mines and negs on board
@@ -49,6 +50,7 @@ function cellClicked(elCell, i, j) {
         gElButton.style.display = 'block';
         putRandomMine(gLevel.mines, i, j);
         gCounterCell++;
+        // CR: this should happen once after the bombs are placed, this thing wont change
         findAllNegs(gBoard);
     }
 
